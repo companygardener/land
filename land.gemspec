@@ -29,7 +29,7 @@ Gem::Specification.new do |gem|
 
   gem.metadata["homepage_uri"]    = gem.homepage
   gem.metadata["source_code_uri"] = gem.homepage
-  # gem.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  gem.metadata["changelog_uri"]   = "https://github.com/companygardener/land/blob/master/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
