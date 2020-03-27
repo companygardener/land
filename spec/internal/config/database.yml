@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  database: land_development
+
+# Combustion uses the "test" config even when RAILS_ENV == "development"
+test:
+  adapter:  postgresql
+  database: land_test
+

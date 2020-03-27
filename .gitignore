@@ -1,0 +1,4 @@
+.bundle/
+pkg/
+rdoc/
+spec/examples.txt
