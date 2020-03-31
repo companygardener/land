@@ -112,7 +112,7 @@ module Land
       it 'tracks attributions' do
         click_id = SecureRandom.uuid
 
-        get :test, params: {
+        params = {
           ad_group:       'testgroup',
           ad_type:        'pe',
           aid:            'testapp',
@@ -134,6 +134,10 @@ module Land
           subsource:      'youtube',
           target:         'destroyed'
         }
+
+        expect { Land::Attribution.digest(params.stringify_keys) }.to_not raise_error
+
+        get :test, params: params
 
         a = Attribution.last
 
