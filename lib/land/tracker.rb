@@ -146,6 +146,7 @@ module Land
 
       # Invalid cookie
       @cookie_id = nil
+      @visit_id  = nil
     end
 
     def set_cookie
