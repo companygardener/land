@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Land
   module TableName
     extend ActiveSupport::Concern

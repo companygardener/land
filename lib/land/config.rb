@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Land
   class Config < HashWithIndifferentAccess
     attr_reader :enabled, :secure_cookie
