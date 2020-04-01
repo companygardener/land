@@ -1,4 +1,6 @@
-require "land"
+# frozen_string_literal: true
+
+require 'land'
 
 Land.configure do |config|
   # Enable land tracking
@@ -17,10 +19,10 @@ Land.configure do |config|
   # ]
 
   # If request.user_agent is blank, this string is saved instead.
-  config.blank_user_agent_string = "user agent missing"
+  config.blank_user_agent_string = 'user agent missing'
 
   # Database schema for land tables
-  config.schema = "land"
+  config.schema = 'land'
 
   # Timeout before a new visit is created
   config.visit_timeout = 1.hour
