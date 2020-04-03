@@ -5,7 +5,7 @@ require "bundler"
 
 Bundler.require :default, :development
 
-Combustion.initialize! :all,
+Combustion.initialize! :active_record,
   database_reset: false,
   load_schema: false,
   database_migrate: false

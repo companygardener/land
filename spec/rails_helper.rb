@@ -6,7 +6,7 @@ ENV['RAILS_ENV'] ||= "test"
 require 'bundler/setup'
 require "combustion"
 
-Combustion.initialize! :all,
+Combustion.initialize! :active_record,
   database_reset: false,
   load_schema: false,
   database_migrate: true

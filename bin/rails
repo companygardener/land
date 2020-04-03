@@ -13,7 +13,7 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 require 'combustion'
 
-Combustion.initialize! :all,
+Combustion.initialize! :active_record,
   database_reset: false,
   load_schema: false,
   database_migrate: false

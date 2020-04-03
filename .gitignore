@@ -1,5 +1,6 @@
 Gemfile.lock
 .bundle/
+gemfiles/*.lock
 pkg/
 rdoc/
 spec/examples.txt
