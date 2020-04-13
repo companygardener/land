@@ -7,8 +7,10 @@ module Land
     KEYS = %w[
       ad_type
       ad_group
+      affiliate
       app
       bid_match_type
+      brand
       campaign
       content
       creative

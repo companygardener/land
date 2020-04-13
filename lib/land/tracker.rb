@@ -19,10 +19,12 @@ module Land
     #
     # https://strackr.com/subid
     TRACKING_PARAMS = {
-      'app'            => %w[aid],
       'ad_group'       => %w[ad_group adgroup adset_name ovadgrpid ysmadgrpid],
       'ad_type'        => %w[ad_type adtype],
+      'affiliate'      => %w[affiliate aff affid],
+      'app'            => %w[aid],
       'bid_match_type' => %w[bidmatchtype bid_match_type bmt],
+      'brand'          => %w[brand brand_name],
       'campaign'       => %w[campaign campaign_name utm_campaign ovcampgid ysmcampgid cn],
       'click_id'       => %w[click_id clickid dclid fbclid gclid gclsrc msclkid zanpid],
       'content'        => %w[content ad_name utm_content cc],

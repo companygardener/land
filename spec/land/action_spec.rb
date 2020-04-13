@@ -118,7 +118,9 @@ module Land
           ad_group:       'testgroup',
           ad_type:        'pe',
           aid:            'testapp',
+          aff:            'testaff',
           bid_match_type: 'bb',
+          brand:          'Land',
           campaign:       'testing',
           click_id:       click_id,
           content:        'testcontent',
@@ -143,10 +145,12 @@ module Land
 
         a = Attribution.last
 
-        expect(a.app).to            eq 'testapp'
         expect(a.ad_type).to        eq 'product_extensions'
         expect(a.ad_group).to       eq 'testgroup'
+        expect(a.affiliate).to      eq 'testaff'
+        expect(a.app).to            eq 'testapp'
         expect(a.bid_match_type).to eq 'bidded broad'
+        expect(a.brand).to          eq 'Land'
         expect(a.campaign).to       eq 'testing'
         expect(a.content).to        eq 'testcontent'
         expect(a.creative).to       eq 'v1'

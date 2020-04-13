@@ -3,7 +3,7 @@ module Land
     extend ActiveSupport::Concern
 
     included do
-      prepend_around_action :track_with_land!
+      prepend_around_action :track_with_land! if Land.config.enabled
     end
 
     # Use @land to avoid conflicts in controller namespace

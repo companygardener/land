@@ -12,10 +12,6 @@ module Land
         include Land::Action
 
         helper  Land::Helper
-
-        if Land.config.enabled
-          prepend_around_action :track_with_land!
-        end
       end
     end
   end

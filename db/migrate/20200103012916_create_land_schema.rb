@@ -1,9 +1,11 @@
 class CreateLandSchema < ActiveRecord::Migration[5.0]
   QUERY_PARAMS = %w[
-    app
     ad_type
     ad_group
+    affiliate
+    app
     bid_match_type
+    brand
     campaign
     content
     creative

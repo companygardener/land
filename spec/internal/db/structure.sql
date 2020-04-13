@@ -32,7 +32,7 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
+SET default_with_oids = false;
 
 --
 -- Name: ad_groups; Type: TABLE; Schema: land; Owner: -
@@ -93,6 +93,35 @@ ALTER SEQUENCE land.ad_types_ad_type_id_seq OWNED BY land.ad_types.ad_type_id;
 
 
 --
+-- Name: affiliates; Type: TABLE; Schema: land; Owner: -
+--
+
+CREATE TABLE land.affiliates (
+    affiliate_id bigint NOT NULL,
+    affiliate text NOT NULL
+);
+
+
+--
+-- Name: affiliates_affiliate_id_seq; Type: SEQUENCE; Schema: land; Owner: -
+--
+
+CREATE SEQUENCE land.affiliates_affiliate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: affiliates_affiliate_id_seq; Type: SEQUENCE OWNED BY; Schema: land; Owner: -
+--
+
+ALTER SEQUENCE land.affiliates_affiliate_id_seq OWNED BY land.affiliates.affiliate_id;
+
+
+--
 -- Name: apps; Type: TABLE; Schema: land; Owner: -
 --
 
@@ -127,10 +156,12 @@ ALTER SEQUENCE land.apps_app_id_seq OWNED BY land.apps.app_id;
 
 CREATE TABLE land.attributions (
     attribution_id integer NOT NULL,
-    app_id integer,
     ad_type_id smallint,
     ad_group_id integer,
+    affiliate_id integer,
+    app_id integer,
     bid_match_type_id smallint,
+    brand_id integer,
     campaign_id integer,
     content_id integer,
     creative_id integer,
@@ -197,6 +228,35 @@ CREATE SEQUENCE land.bid_match_types_bid_match_type_id_seq
 --
 
 ALTER SEQUENCE land.bid_match_types_bid_match_type_id_seq OWNED BY land.bid_match_types.bid_match_type_id;
+
+
+--
+-- Name: brands; Type: TABLE; Schema: land; Owner: -
+--
+
+CREATE TABLE land.brands (
+    brand_id bigint NOT NULL,
+    brand text NOT NULL
+);
+
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE; Schema: land; Owner: -
+--
+
+CREATE SEQUENCE land.brands_brand_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE OWNED BY; Schema: land; Owner: -
+--
+
+ALTER SEQUENCE land.brands_brand_id_seq OWNED BY land.brands.brand_id;
 
 
 --
@@ -1171,6 +1231,13 @@ ALTER TABLE ONLY land.ad_types ALTER COLUMN ad_type_id SET DEFAULT nextval('land
 
 
 --
+-- Name: affiliates affiliate_id; Type: DEFAULT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.affiliates ALTER COLUMN affiliate_id SET DEFAULT nextval('land.affiliates_affiliate_id_seq'::regclass);
+
+
+--
 -- Name: apps app_id; Type: DEFAULT; Schema: land; Owner: -
 --
 
@@ -1189,6 +1256,13 @@ ALTER TABLE ONLY land.attributions ALTER COLUMN attribution_id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY land.bid_match_types ALTER COLUMN bid_match_type_id SET DEFAULT nextval('land.bid_match_types_bid_match_type_id_seq'::regclass);
+
+
+--
+-- Name: brands brand_id; Type: DEFAULT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.brands ALTER COLUMN brand_id SET DEFAULT nextval('land.brands_brand_id_seq'::regclass);
 
 
 --
@@ -1411,6 +1485,14 @@ ALTER TABLE ONLY land.ad_types
 
 
 --
+-- Name: affiliates affiliates_pkey; Type: CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.affiliates
+    ADD CONSTRAINT affiliates_pkey PRIMARY KEY (affiliate_id);
+
+
+--
 -- Name: apps apps_pkey; Type: CONSTRAINT; Schema: land; Owner: -
 --
 
@@ -1419,11 +1501,11 @@ ALTER TABLE ONLY land.apps
 
 
 --
--- Name: attributions attributions_app_id_ad_type_id_ad_group_id_bid_match_type_i_key; Type: CONSTRAINT; Schema: land; Owner: -
+-- Name: attributions attributions_ad_type_id_ad_group_id_affiliate_id_app_id_bid_key; Type: CONSTRAINT; Schema: land; Owner: -
 --
 
 ALTER TABLE ONLY land.attributions
-    ADD CONSTRAINT attributions_app_id_ad_type_id_ad_group_id_bid_match_type_i_key UNIQUE (app_id, ad_type_id, ad_group_id, bid_match_type_id, campaign_id, content_id, creative_id, device_type_id, experiment_id, keyword_id, match_type_id, medium_id, network_id, placement_id, position_id, search_term_id, source_id, subsource_id, target_id);
+    ADD CONSTRAINT attributions_ad_type_id_ad_group_id_affiliate_id_app_id_bid_key UNIQUE (ad_type_id, ad_group_id, affiliate_id, app_id, bid_match_type_id, brand_id, campaign_id, content_id, creative_id, device_type_id, experiment_id, keyword_id, match_type_id, medium_id, network_id, placement_id, position_id, search_term_id, source_id, subsource_id, target_id);
 
 
 --
@@ -1440,6 +1522,14 @@ ALTER TABLE ONLY land.attributions
 
 ALTER TABLE ONLY land.bid_match_types
     ADD CONSTRAINT bid_match_types_pkey PRIMARY KEY (bid_match_type_id);
+
+
+--
+-- Name: brands brands_pkey; Type: CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (brand_id);
 
 
 --
@@ -1769,6 +1859,13 @@ CREATE UNIQUE INDEX ad_types__u_ad_type ON land.ad_types USING btree (ad_type);
 
 
 --
+-- Name: affiliates__u_affiliate; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE UNIQUE INDEX affiliates__u_affiliate ON land.affiliates USING btree (affiliate);
+
+
+--
 -- Name: apps__u_app; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -1790,6 +1887,13 @@ CREATE INDEX attributions_ad_type_id_idx ON land.attributions USING btree (ad_ty
 
 
 --
+-- Name: attributions_affiliate_id_idx; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX attributions_affiliate_id_idx ON land.attributions USING btree (affiliate_id);
+
+
+--
 -- Name: attributions_app_id_idx; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -1801,6 +1905,13 @@ CREATE INDEX attributions_app_id_idx ON land.attributions USING btree (app_id);
 --
 
 CREATE INDEX attributions_bid_match_type_id_idx ON land.attributions USING btree (bid_match_type_id);
+
+
+--
+-- Name: attributions_brand_id_idx; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX attributions_brand_id_idx ON land.attributions USING btree (brand_id);
 
 
 --
@@ -1913,6 +2024,13 @@ CREATE INDEX attributions_target_id_idx ON land.attributions USING btree (target
 --
 
 CREATE UNIQUE INDEX bid_match_types__u_bid_match_type ON land.bid_match_types USING btree (bid_match_type);
+
+
+--
+-- Name: brands__u_brand; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE UNIQUE INDEX brands__u_brand ON land.brands USING btree (brand);
 
 
 --
@@ -2240,6 +2358,14 @@ ALTER TABLE ONLY land.attributions
 
 
 --
+-- Name: attributions attributions_affiliate_id_fkey; Type: FK CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.attributions
+    ADD CONSTRAINT attributions_affiliate_id_fkey FOREIGN KEY (affiliate_id) REFERENCES land.affiliates(affiliate_id);
+
+
+--
 -- Name: attributions attributions_app_id_fkey; Type: FK CONSTRAINT; Schema: land; Owner: -
 --
 
@@ -2253,6 +2379,14 @@ ALTER TABLE ONLY land.attributions
 
 ALTER TABLE ONLY land.attributions
     ADD CONSTRAINT attributions_bid_match_type_id_fkey FOREIGN KEY (bid_match_type_id) REFERENCES land.bid_match_types(bid_match_type_id);
+
+
+--
+-- Name: attributions attributions_brand_id_fkey; Type: FK CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.attributions
+    ADD CONSTRAINT attributions_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES land.brands(brand_id);
 
 
 --
