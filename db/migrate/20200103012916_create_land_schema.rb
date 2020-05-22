@@ -30,6 +30,9 @@ class CreateLandSchema < ActiveRecord::Migration[5.0]
   def up
     execute "CREATE SCHEMA #{schema};"
 
+    conn = ActiveRecord::Base.connection
+    old_search_path = conn.schema_search_path
+
     with_options schema: schema do |t|
       # Query params
       t.create_lookup_tables(*QUERY_PARAMS.map(&:pluralize))
@@ -223,5 +226,7 @@ class CreateLandSchema < ActiveRecord::Migration[5.0]
         ORDER BY agg."avg response time (ms)" DESC
         ;
     SQL
+
+    conn.schema_search_path = old_search_path
   end
 end
