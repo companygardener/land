@@ -170,6 +170,24 @@ module Land
         expect(controller.land.pageview.click_id).to eq click_id
       end
 
+    context 'when params have nil values' do
+      it 'tracks attributions' do
+        campaign = SecureRandom.uuid
+        params = {
+          ad_type: nil,
+          campaign: campaign
+        }
+
+       expect { Land::Attribution.digest(params.stringify_keys) }.to_not raise_error
+
+       get :test, params: params
+
+       a = Attribution.find_by(campaign_id: Campaign[campaign].id)
+
+        expect(a.ad_type).to eq nil
+      end
+    end
+
       { 'pe'  => 'product_extensions',
         'pla' => 'product_listing'
       }.each do |key, value|
