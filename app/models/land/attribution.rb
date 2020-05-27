@@ -56,7 +56,7 @@ module Land
       end
 
       def digest(params)
-        Digest::SHA2.base64digest transform(params).values.map(&:name).sort.join("\n")
+        Digest::SHA2.base64digest transform(params).values.compact.map(&:name).sort.join("\n")
       end
     end
   end
