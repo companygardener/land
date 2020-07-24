@@ -196,6 +196,7 @@ class CreateLandSchema < ActiveRecord::Migration[5.0]
 
         , event_type_id SMALLINT    NOT NULL REFERENCES event_types
         , visit_id      UUID        NOT NULL REFERENCES visits
+        , pageview_id   UUID                 REFERENCES pageviews
 
         , meta          JSON
 
@@ -204,6 +205,7 @@ class CreateLandSchema < ActiveRecord::Migration[5.0]
 
       CREATE INDEX ON events (event_type_id);
       CREATE INDEX ON events (visit_id);
+      CREATE INDEX ON events (pageview_id);
 
 
       INSERT INTO bid_match_types (bid_match_type) VALUES ('bidded broad'), ('bidded content'), ('bidded exact'), ('bidded phrase');
