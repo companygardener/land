@@ -510,6 +510,7 @@ CREATE TABLE land.events (
     event_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     event_type_id smallint NOT NULL,
     visit_id uuid NOT NULL,
+    pageview_id uuid,
     meta json,
     created_at timestamp with time zone DEFAULT now() NOT NULL
 );
@@ -2097,6 +2098,13 @@ CREATE INDEX events_event_type_id_idx ON land.events USING btree (event_type_id)
 
 
 --
+-- Name: events_pageview_id_idx; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX events_pageview_id_idx ON land.events USING btree (pageview_id);
+
+
+--
 -- Name: events_visit_id_idx; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -2515,6 +2523,14 @@ ALTER TABLE ONLY land.attributions
 
 ALTER TABLE ONLY land.events
     ADD CONSTRAINT events_event_type_id_fkey FOREIGN KEY (event_type_id) REFERENCES land.event_types(event_type_id);
+
+
+--
+-- Name: events events_pageview_id_fkey; Type: FK CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.events
+    ADD CONSTRAINT events_pageview_id_fkey FOREIGN KEY (pageview_id) REFERENCES land.pageviews(pageview_id);
 
 
 --
