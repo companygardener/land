@@ -58,6 +58,7 @@ module Land
         # expect(pageview.request_id).to eq uuid
       end
 
+
       it 'tracks referers' do
         request.headers['HTTP_REFERER'] = "https://google.com/results?q=needle"
 
@@ -245,6 +246,14 @@ module Land
           expect(Attribution.last.source).to eq value
         end
       end
+    end
+
+    it 'tracks events' do
+      EventType.create(event_type: 'test')
+
+      get :test
+      
+      expect { Event.create(visit_id: Visit.last.id, event_type: 'test', pageview_id: Pageview.last.id) }.not_to raise_error
     end
   end
 end

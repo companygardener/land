@@ -45,7 +45,7 @@ module Land
           p.response_time = (current_time - @start_time) * 1000
         end
       end
-
+      
       def save
         record_pageview
 
