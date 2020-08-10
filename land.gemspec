@@ -52,5 +52,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "pry"
 
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rspec_junit_formatter"
   gem.add_development_dependency "rspec-rails"
+  gem.add_dependency "simplecov", "< 0.18"
 end

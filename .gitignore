@@ -4,3 +4,4 @@ gemfiles/*.lock
 pkg/
 rdoc/
 spec/examples.txt
+coverage/*

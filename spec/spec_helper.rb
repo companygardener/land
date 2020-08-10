@@ -15,6 +15,15 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+SimpleCov.minimum_coverage 86
+SimpleCov.start 'rails' do
+  add_filter '/spec'
+  # rails-generated superclass files
+  add_filter '/app/jobs/application_job.rb'
+  add_filter '/app/models/application_record.rb'
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
