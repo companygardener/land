@@ -184,7 +184,7 @@ module Land
     end
 
     def referer_uri
-      @referer_uri ||= URI(URI.encode(request.referer)) if request.referer
+      @referer_uri ||= URI(request.referer) if request.referer
     end
 
     def attribution
