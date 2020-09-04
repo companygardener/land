@@ -60,7 +60,7 @@ module Land
 
 
       it 'tracks referers' do
-        request.headers['HTTP_REFERER'] = "https://google.com/results?q=needle"
+        request.headers['HTTP_REFERER'] = "https://google.com/results?q=needle foo"
 
         get :test
 
@@ -70,7 +70,7 @@ module Land
 
         expect(visit.referer.domain).to       eq "google.com"
         expect(visit.referer.path).to         eq "/results"
-        expect(visit.referer.query_string).to eq "q=needle"
+        expect(visit.referer.query_string).to eq "q=needle+foo"
       end
 
       it 'sets cookies' do
