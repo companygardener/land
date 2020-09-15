@@ -125,6 +125,7 @@ module Land
 
       Event.new(visit_id: @visit_id, event_type: type, meta: meta).tap do |event|
         @events << event
+        event.save!
       end
     end
 
