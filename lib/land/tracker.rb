@@ -120,7 +120,7 @@ module Land
       @status     = nil
     end
 
-    def create_event(type, meta = {})
+    def queue_event(type, meta = {})
       return unless tracking?
 
       Event.new(visit_id: @visit_id, event_type: type, meta: meta).tap do |event|
