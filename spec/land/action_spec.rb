@@ -83,6 +83,51 @@ module Land
         end
       end
 
+      it 'tracks referers without scheme and starts with www' do
+        request.headers['HTTP_REFERER'] = "www.google.com/results?q=needle foo"
+
+        get :test
+
+        visit = controller.land.visit
+
+        expect(visit).to be_persisted
+
+        expect(Referer.count).to eq 1
+
+        expect(visit.referer.domain).to       eq "www.google.com"
+        expect(visit.referer.path).to         eq "/results"
+        expect(visit.referer.query_string).to eq "q=needle+foo"
+      end
+
+      it 'tracks invalid referers' do
+        request.headers['HTTP_REFERER'] = "path/results?q=needle foo"
+
+        get :test
+
+        visit = controller.land.visit
+
+        expect(visit).to be_persisted
+
+        expect(Referer.count).to eq 1
+
+        expect(visit.referer.domain).to       eq ""
+        expect(visit.referer.path).to         eq "path/results"
+        expect(visit.referer.query_string).to eq "q=needle+foo"
+      end
+
+      it 'does not track blank referer' do
+        request.headers['HTTP_REFERER'] = "   \t"
+
+        get :test
+
+        visit = controller.land.visit
+
+        expect(visit).to be_persisted
+
+        expect(Referer.count).to eq 0
+        expect(visit.referer).to be nil
+      end
+
       it 'sets cookies' do
         expect { get :test }.to change { Cookie.count }.by 1
 
