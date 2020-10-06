@@ -58,19 +58,29 @@ module Land
         # expect(pageview.request_id).to eq uuid
       end
 
+      context 'when tracking referers' do
+        it 'tracks referers' do
+          request.headers['HTTP_REFERER'] = "https://google.com/results?q=needle foo"
+          get :test
 
-      it 'tracks referers' do
-        request.headers['HTTP_REFERER'] = "https://google.com/results?q=needle foo"
+          visit = controller.land.visit
 
-        get :test
+          expect(Referer.count).to eq 1
 
-        visit = controller.land.visit
+          expect(visit.referer.domain).to       eq "google.com"
+          expect(visit.referer.path).to         eq "/results"
+          expect(visit.referer.query_string).to eq "q=needle+foo"
+        end
 
-        expect(Referer.count).to eq 1
+        it 'treats a malformed root referer as root path' do
+          request.headers['HTTP_REFERER'] = "https://m.facebook.com"
+          get :test
 
-        expect(visit.referer.domain).to       eq "google.com"
-        expect(visit.referer.path).to         eq "/results"
-        expect(visit.referer.query_string).to eq "q=needle+foo"
+          visit = controller.land.visit
+
+          expect(visit.referer.domain).to       eq 'm.facebook.com'
+          expect(visit.referer.path).to         eq '/'
+        end
       end
 
       it 'sets cookies' do

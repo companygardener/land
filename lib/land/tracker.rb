@@ -171,7 +171,7 @@ module Land
 
       begin
         @referer = Referer.where(domain_id:       Domain[referer_uri.host],
-                                 path_id:         Path[referer_uri.path],
+                                 path_id:         Path[referer_path],
                                  query_string_id: QueryString[query.to_query],
                                  attribution_id:  attribution.id).first_or_create
       rescue ActiveRecord::RecordNotUnique
@@ -181,6 +181,10 @@ module Land
 
     def referer_changed?
       external_referer? && referer_hash != @referer_hash
+    end
+
+    def referer_path
+      referer_uri.path.present? ? referer_uri.path : '/'
     end
 
     def referer_uri
