@@ -512,7 +512,8 @@ CREATE TABLE land.events (
     visit_id uuid NOT NULL,
     pageview_id uuid,
     meta json,
-    created_at timestamp with time zone DEFAULT now() NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    request_id uuid
 );
 
 
@@ -2126,6 +2127,13 @@ CREATE UNIQUE INDEX http_methods__u_http_method ON land.http_methods USING btree
 
 
 --
+-- Name: index_land.events_on_request_id; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX "index_land.events_on_request_id" ON land.events USING btree (request_id);
+
+
+--
 -- Name: keywords__u_keyword; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -2708,6 +2716,8 @@ ALTER TABLE ONLY land.visits
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20200103012916');
+('20200103012916'),
+('20201024041516'),
+('20201027042604');
 
 

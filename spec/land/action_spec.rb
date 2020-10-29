@@ -53,9 +53,6 @@ module Land
         expect(pageview.path).to eq "/test"
         expect(pageview.query_string).to be_blank
         expect(pageview.http_status).to  eq 200
-
-        # @todo is combustion running the ActionDispatch::RequestId middleware?
-        # expect(pageview.request_id).to eq uuid
       end
 
       context 'when tracking referers' do

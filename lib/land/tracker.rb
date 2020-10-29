@@ -123,7 +123,7 @@ module Land
     def queue_event(type, meta = {})
       return unless tracking?
 
-      Event.new(visit_id: @visit_id, event_type: type, meta: meta).tap do |event|
+      Event.new(visit_id: @visit_id, event_type: type, meta: meta, request_id: request.uuid).tap do |event|
         @events << event
       end
     end
