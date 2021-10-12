@@ -32,8 +32,6 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
-
 --
 -- Name: ad_groups; Type: TABLE; Schema: land; Owner: -
 --

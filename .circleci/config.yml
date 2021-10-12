@@ -60,6 +60,7 @@ jobs:
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+      - run: sudo apt -y update; sudo apt install -y postgresql-client
       - run:
           name: Install postgresql-client
           command: sudo apt install -y postgresql-client || true

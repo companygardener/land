@@ -9,11 +9,13 @@ module Land
     # This removes the unnecessary query.
     belongs_to :visit, optional: true
 
+    has_many :events
+
     lookup_for :mime_type,    class_name: MimeType
     lookup_for :http_method,  class_name: HttpMethod
     lookup_for :path,         class_name: Path
     lookup_for :query_string, class_name: QueryString
-
+    
     after_initialize do
       self.id ||= SecureRandom.uuid
     end

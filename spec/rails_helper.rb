@@ -14,7 +14,7 @@ end
 Combustion.initialize! :active_record,
   database_reset: false,
   load_schema: false,
-  database_migrate: true
+  database_migrate: false
 
 Land.config.enabled = true
 
