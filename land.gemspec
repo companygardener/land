@@ -41,6 +41,7 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
   gem.require_paths = ["lib"]
 
+  gem.add_dependency "addressable"
   gem.add_dependency "activerecord", " > 4.0.0"
   gem.add_dependency "lookup_by",    "~> 0.11.0"
 
