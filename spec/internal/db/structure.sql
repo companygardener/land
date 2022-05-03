@@ -2132,6 +2132,13 @@ CREATE INDEX "index_land.events_on_request_id" ON land.events USING btree (reque
 
 
 --
+-- Name: index_land.pageviews_on_created_at; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX "index_land.pageviews_on_created_at" ON land.pageviews USING btree (created_at);
+
+
+--
 -- Name: keywords__u_keyword; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -2717,6 +2724,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200103012916'),
 ('20200724201945'),
 ('20201024041516'),
-('20201027042604');
+('20201027042604'),
+('20220428195358');
 
 
