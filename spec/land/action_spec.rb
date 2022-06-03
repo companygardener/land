@@ -32,13 +32,50 @@ module Land
     end
 
     describe 'track_with_land!' do
-      it 'tracks visits' do
-        expect { get :test }.to change { Visit.count }.by 1
+      context 'when tracking visits' do
+        it 'tracks visits' do
+          expect { get :test }.to change { Visit.count }.by 1
 
-        visit = controller.land.visit
+          visit = controller.land.visit
 
-        expect(visit.ip_address.to_s).to eq "0.0.0.0"
-        expect(visit.user_agent.name).to eq "Rails Testing"
+          expect(visit.ip_address.to_s).to eq "0.0.0.0"
+          expect(visit.user_agent.name).to eq "Rails Testing"
+        end
+
+        it 'handles bad params' do
+          expect { get :test, params: { device_type: "../../../../../../../../etc/passwd\u0000" } }.to change { Visit.count }.by 1
+
+          expect(DeviceType.last.device_type).to start_with 'ArgumentError'
+        end
+
+        context 'when PG-level error' do
+          before do
+            allow(Land::Content).to receive(:[]).and_call_original
+            allow(Land::Content).to receive(:[]).with(param).and_raise error
+          end
+
+          context 'when size overflow' do
+            let(:error) { ActiveRecord::StatementInvalid.new 'PG::ProgramLimitExceeded' }
+            let(:param) { 'a' * 3_000 }
+
+            it 'handles param overflow' do
+              expect { get :test, params: { content: param } }.to change { Visit.count }.by 1
+
+              expect(Content.last.content).to start_with 'PG::ProgramLimitExceeded'
+            end
+          end
+
+          context 'when defaulting to bad param handling' do
+            let(:error) { ActiveRecord::StatementInvalid.new 'Something Other Error' }
+            let(:param) { 'something malformed' }
+
+            it 'handles param overflow' do
+              expect { get :test, params: { content: param } }.to change { Visit.count }.by 1
+
+              expect(Content.last.content).to start_with 'ActiveRecord::StatementInvalid'
+            end
+          end
+        end
       end
 
       it 'tracks pageviews' do
