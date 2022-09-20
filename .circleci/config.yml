@@ -10,7 +10,7 @@ references:
       COVERAGE: true
       TZ: /usr/share/zoneinfo/America/Chicago
   postgres: &postgres
-    image: circleci/postgres:11.4-alpine
+    image: cimg/postgres:13.4
     environment:
       POSTGRES_DB: land_test
       POSTGRES_USER: land

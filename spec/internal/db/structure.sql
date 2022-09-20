@@ -32,6 +32,8 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 SET default_tablespace = '';
 
+SET default_table_access_method = heap;
+
 --
 -- Name: ad_groups; Type: TABLE; Schema: land; Owner: -
 --
@@ -2125,6 +2127,20 @@ CREATE UNIQUE INDEX http_methods__u_http_method ON land.http_methods USING btree
 
 
 --
+-- Name: index_land.events_on_created_at; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX "index_land.events_on_created_at" ON land.events USING btree (created_at);
+
+
+--
+-- Name: index_land.events_on_pageview_id; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE INDEX "index_land.events_on_pageview_id" ON land.events USING btree (pageview_id);
+
+
+--
 -- Name: index_land.events_on_request_id; Type: INDEX; Schema: land; Owner: -
 --
 
@@ -2725,6 +2741,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200724201945'),
 ('20201024041516'),
 ('20201027042604'),
-('20220428195358');
+('20220428195358'),
+('20220914012158');
 
 

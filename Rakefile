@@ -12,7 +12,7 @@ Combustion::Application.configure_for_combustion
 Combustion::Application.load_tasks
 
 if defined?(ActiveRecord)
-  ActiveRecord::Base.schema_format = :sql
+  ActiveRecord.schema_format = :sql
 end
 
 require "rspec/core/rake_task"
