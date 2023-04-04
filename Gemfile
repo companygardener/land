@@ -16,4 +16,5 @@ gemspec
 group :development, :test do
   gem "combustion"
   gem "pry-rails"
+  gem 'cgi', '~> 0.3.6'
 end
