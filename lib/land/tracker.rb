@@ -27,14 +27,17 @@ module Land
       'bid_match_type' => %w[bidmatchtype bid_match_type bmt],
       'brand'          => %w[brand brand_name],
       'campaign'       => %w[campaign campaign_name utm_campaign ovcampgid ysmcampgid cn],
+      'campaign_identifier' => %w[campaign_identifier campaignidentifier campaignid campaign_id cid utm_campaign_id],
       'click_id'       => %w[click_id clickid dclid fbclid gclid gclsrc msclkid zanpid],
       'content'        => %w[content ad_name utm_content cc],
+      'content_identifier' => %w[content_identifier contentidentifier contentid content_id cntid utm_content_id],
       'creative'       => %w[creative adid ovadid],
       'device_type'    => %w[device_type devicetype device],
       'experiment'     => %w[experiment aceid],
       'keyword'        => %w[keyword kw utm_term ovkey ysmkey],
       'match_type'     => %w[match_type matchtype match ovmtc ysmmtc],
       'medium'         => %w[medium utm_medium cm],
+      'medium_identifier' => %w[medium_identifier mediumidentifier mediumid medium_id mid utm_medium_id],
       'network'        => %w[network anid],
       'placement'      => %w[placement],
       'position'       => %w[position adposition ad_position],
@@ -240,6 +243,7 @@ module Land
       visit.referer_id    = referer.try(:id)
       visit.user_agent_id = user_agent.id
       visit.ip_address    = remote_ip
+      visit.raw_query_string = request.query_string
       visit.save!
 
       @visit_id = @visit.id

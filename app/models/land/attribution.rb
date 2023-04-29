@@ -12,13 +12,16 @@ module Land
       bid_match_type
       brand
       campaign
+      campaign_identifier
       content
+      content_identifier
       creative
       device_type
       experiment
       keyword
       match_type
       medium
+      medium_identifier
       network
       placement
       position

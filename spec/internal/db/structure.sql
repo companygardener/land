@@ -177,7 +177,10 @@ CREATE TABLE land.attributions (
     source_id integer,
     subsource_id integer,
     target_id integer,
-    created_at timestamp with time zone DEFAULT now() NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    campaign_identifier_id integer,
+    medium_identifier_id integer,
+    content_identifier_id integer
 );
 
 
@@ -290,6 +293,35 @@ ALTER SEQUENCE land.browsers_browser_id_seq OWNED BY land.browsers.browser_id;
 
 
 --
+-- Name: campaign_identifiers; Type: TABLE; Schema: land; Owner: -
+--
+
+CREATE TABLE land.campaign_identifiers (
+    campaign_identifier_id bigint NOT NULL,
+    campaign_identifier text NOT NULL
+);
+
+
+--
+-- Name: campaign_identifiers_campaign_identifier_id_seq; Type: SEQUENCE; Schema: land; Owner: -
+--
+
+CREATE SEQUENCE land.campaign_identifiers_campaign_identifier_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: campaign_identifiers_campaign_identifier_id_seq; Type: SEQUENCE OWNED BY; Schema: land; Owner: -
+--
+
+ALTER SEQUENCE land.campaign_identifiers_campaign_identifier_id_seq OWNED BY land.campaign_identifiers.campaign_identifier_id;
+
+
+--
 -- Name: campaigns; Type: TABLE; Schema: land; Owner: -
 --
 
@@ -316,6 +348,35 @@ CREATE SEQUENCE land.campaigns_campaign_id_seq
 --
 
 ALTER SEQUENCE land.campaigns_campaign_id_seq OWNED BY land.campaigns.campaign_id;
+
+
+--
+-- Name: content_identifiers; Type: TABLE; Schema: land; Owner: -
+--
+
+CREATE TABLE land.content_identifiers (
+    content_identifier_id bigint NOT NULL,
+    content_identifier text NOT NULL
+);
+
+
+--
+-- Name: content_identifiers_content_identifier_id_seq; Type: SEQUENCE; Schema: land; Owner: -
+--
+
+CREATE SEQUENCE land.content_identifiers_content_identifier_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_identifiers_content_identifier_id_seq; Type: SEQUENCE OWNED BY; Schema: land; Owner: -
+--
+
+ALTER SEQUENCE land.content_identifiers_content_identifier_id_seq OWNED BY land.content_identifiers.content_identifier_id;
 
 
 --
@@ -661,6 +722,35 @@ CREATE SEQUENCE land.media_medium_id_seq
 --
 
 ALTER SEQUENCE land.media_medium_id_seq OWNED BY land.media.medium_id;
+
+
+--
+-- Name: medium_identifiers; Type: TABLE; Schema: land; Owner: -
+--
+
+CREATE TABLE land.medium_identifiers (
+    medium_identifier_id bigint NOT NULL,
+    medium_identifier text NOT NULL
+);
+
+
+--
+-- Name: medium_identifiers_medium_identifier_id_seq; Type: SEQUENCE; Schema: land; Owner: -
+--
+
+CREATE SEQUENCE land.medium_identifiers_medium_identifier_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: medium_identifiers_medium_identifier_id_seq; Type: SEQUENCE OWNED BY; Schema: land; Owner: -
+--
+
+ALTER SEQUENCE land.medium_identifiers_medium_identifier_id_seq OWNED BY land.medium_identifiers.medium_identifier_id;
 
 
 --
@@ -1275,10 +1365,24 @@ ALTER TABLE ONLY land.browsers ALTER COLUMN browser_id SET DEFAULT nextval('land
 
 
 --
+-- Name: campaign_identifiers campaign_identifier_id; Type: DEFAULT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.campaign_identifiers ALTER COLUMN campaign_identifier_id SET DEFAULT nextval('land.campaign_identifiers_campaign_identifier_id_seq'::regclass);
+
+
+--
 -- Name: campaigns campaign_id; Type: DEFAULT; Schema: land; Owner: -
 --
 
 ALTER TABLE ONLY land.campaigns ALTER COLUMN campaign_id SET DEFAULT nextval('land.campaigns_campaign_id_seq'::regclass);
+
+
+--
+-- Name: content_identifiers content_identifier_id; Type: DEFAULT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.content_identifiers ALTER COLUMN content_identifier_id SET DEFAULT nextval('land.content_identifiers_content_identifier_id_seq'::regclass);
 
 
 --
@@ -1356,6 +1460,13 @@ ALTER TABLE ONLY land.match_types ALTER COLUMN match_type_id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY land.media ALTER COLUMN medium_id SET DEFAULT nextval('land.media_medium_id_seq'::regclass);
+
+
+--
+-- Name: medium_identifiers medium_identifier_id; Type: DEFAULT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.medium_identifiers ALTER COLUMN medium_identifier_id SET DEFAULT nextval('land.medium_identifiers_medium_identifier_id_seq'::regclass);
 
 
 --
@@ -1543,11 +1654,27 @@ ALTER TABLE ONLY land.browsers
 
 
 --
+-- Name: campaign_identifiers campaign_identifiers_pkey; Type: CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.campaign_identifiers
+    ADD CONSTRAINT campaign_identifiers_pkey PRIMARY KEY (campaign_identifier_id);
+
+
+--
 -- Name: campaigns campaigns_pkey; Type: CONSTRAINT; Schema: land; Owner: -
 --
 
 ALTER TABLE ONLY land.campaigns
     ADD CONSTRAINT campaigns_pkey PRIMARY KEY (campaign_id);
+
+
+--
+-- Name: content_identifiers content_identifiers_pkey; Type: CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.content_identifiers
+    ADD CONSTRAINT content_identifiers_pkey PRIMARY KEY (content_identifier_id);
 
 
 --
@@ -1652,6 +1779,14 @@ ALTER TABLE ONLY land.match_types
 
 ALTER TABLE ONLY land.media
     ADD CONSTRAINT media_pkey PRIMARY KEY (medium_id);
+
+
+--
+-- Name: medium_identifiers medium_identifiers_pkey; Type: CONSTRAINT; Schema: land; Owner: -
+--
+
+ALTER TABLE ONLY land.medium_identifiers
+    ADD CONSTRAINT medium_identifiers_pkey PRIMARY KEY (medium_identifier_id);
 
 
 --
@@ -2043,10 +2178,24 @@ CREATE UNIQUE INDEX browsers__u_browser ON land.browsers USING btree (browser);
 
 
 --
+-- Name: campaign_identifiers__u_campaign_identifier; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE UNIQUE INDEX campaign_identifiers__u_campaign_identifier ON land.campaign_identifiers USING btree (campaign_identifier);
+
+
+--
 -- Name: campaigns__u_campaign; Type: INDEX; Schema: land; Owner: -
 --
 
 CREATE UNIQUE INDEX campaigns__u_campaign ON land.campaigns USING btree (campaign);
+
+
+--
+-- Name: content_identifiers__u_content_identifier; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE UNIQUE INDEX content_identifiers__u_content_identifier ON land.content_identifiers USING btree (content_identifier);
 
 
 --
@@ -2173,6 +2322,13 @@ CREATE UNIQUE INDEX match_types__u_match_type ON land.match_types USING btree (m
 --
 
 CREATE UNIQUE INDEX media__u_medium ON land.media USING btree (medium);
+
+
+--
+-- Name: medium_identifiers__u_medium_identifier; Type: INDEX; Schema: land; Owner: -
+--
+
+CREATE UNIQUE INDEX medium_identifiers__u_medium_identifier ON land.medium_identifiers USING btree (medium_identifier);
 
 
 --
@@ -2742,6 +2898,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201024041516'),
 ('20201027042604'),
 ('20220428195358'),
-('20220914012158');
+('20220914012158'),
+('20230116162450');
 
 
